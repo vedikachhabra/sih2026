@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Cognitive Care Platform (NER) - Patient App</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  
+  <!-- Google Fonts: Inter & Material Symbols Outlined -->
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="./manifest.json">
+
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "secondary-fixed-dim": "#cdc0e9",
+            "secondary": "#cdc0e9",
+            "on-surface": "#e6e0e9",
+            "inverse-primary": "#6750a4",
+            "background": "#141218",
+            "on-tertiary": "#3e2e00",
+            "on-primary": "#381e72",
+            "on-primary-fixed": "#22005d",
+            "tertiary-fixed-dim": "#e7c365",
+            "surface-bright": "#3b383e",
+            "secondary-fixed": "#e9ddff",
+            "on-primary-fixed-variant": "#4f378a",
+            "surface-container": "#211f24",
+            "outline": "#948e9c",
+            "tertiary": "#e7c365",
+            "on-secondary-fixed": "#1f1635",
+            "surface-container-lowest": "#0f0d13",
+            "on-tertiary-fixed-variant": "#594400",
+            "on-secondary": "#342b4b",
+            "inverse-on-surface": "#322f35",
+            "on-primary-container": "#e0d2ff",
+            "on-tertiary-fixed": "#241a00",
+            "outline-variant": "#494551",
+            "surface-dim": "#141218",
+            "surface-tint": "#cfbcff",
+            "on-surface-variant": "#cbc4d2",
+            "secondary-container": "#4d4465",
+            "primary-container": "#6750a4",
+            "surface-variant": "#36343a",
+            "primary-fixed-dim": "#cfbcff",
+            "surface-container-highest": "#36343a",
+            "on-error-container": "#ffdad6",
+            "surface-container-high": "#2b292f",
+            "on-error": "#690005",
+            "inverse-surface": "#e6e0e9",
+            "on-secondary-container": "#bfb2da",
+            "primary-fixed": "#e9ddff",
+            "on-background": "#e6e0e9",
+            "error": "#ffb4ab",
+            "on-secondary-fixed-variant": "#4b4263",
+            "error-container": "#93000a",
+            "surface-container-low": "#1d1b20",
+            "tertiary-fixed": "#ffdf93",
+            "tertiary-container": "#c9a74d",
+            "surface": "#141218",
+            "primary": "#cfbcff",
+            "on-tertiary-container": "#503d00"
+          },
+          borderRadius: {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          spacing: {
+            "touch-target-primary": "80px",
+            "bottom-nav-height": "72px",
+            "stack-gap": "24px",
+            "gutter": "24px",
+            "touch-target-min": "64px",
+            "top-bar-height": "80px",
+            "margin-page": "24px"
+          },
+          fontFamily: {
+            "label-lg": ["Inter", "sans-serif"],
+            "headline-xl": ["Inter", "sans-serif"],
+            "body-xl": ["Inter", "sans-serif"],
+            "headline-lg": ["Inter", "sans-serif"],
+            "body-md": ["Inter", "sans-serif"],
+            "body-lg": ["Inter", "sans-serif"]
+          },
+          fontSize: {
+            "label-lg": ["20px", { "lineHeight": "24px", "letterSpacing": "0.05em", "fontWeight": "700" }],
+            "headline-xl": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+            "body-xl": ["28px", { "lineHeight": "40px", "fontWeight": "600" }],
+            "headline-lg": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "body-md": ["20px", { "lineHeight": "32px", "fontWeight": "500" }],
+            "body-lg": ["24px", { "lineHeight": "36px", "fontWeight": "500" }]
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #141218;
+      color: #e6e0e9;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    
+    /* 3D Flip Card Animation */
+    .flip-card-inner {
+      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      transform-style: preserve-3d;
+    }
+    .flip-card.flipped .flip-card-inner {
+      transform: rotateY(180deg);
+    }
+    .flip-card-front, .flip-card-back {
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    }
+    .flip-card-back {
+      transform: rotateY(180deg);
+    }
+
+    /* Pulse border animation for urgent alerts */
+    .pulse-animation {
+      animation: pulse-border 2s infinite;
+    }
+    @keyframes pulse-border {
+      0% { box-shadow: 0 0 0 0 rgba(255, 180, 171, 0.7); }
+      70% { box-shadow: 0 0 0 20px rgba(255, 180, 171, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(255, 180, 171, 0); }
+    }
+
+    /* Shake animation for wrong picks */
+    .shake-animation {
+      animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+    }
+    @keyframes shake {
+      10%, 90% { transform: translate3d(-1px, 0, 0); }
+      20%, 80% { transform: translate3d(2px, 0, 0); }
+      30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+      40%, 60% { transform: translate3d(4px, 0, 0); }
+    }
+  </style>
+</head>
+
+<body class="bg-background text-on-background min-h-screen pb-[96px] pt-[90px]">
+
+  <!-- TopAppBar Fixed Header -->
+  <header class="flex justify-between items-center h-top-bar-height px-margin-page w-full z-40 bg-surface border-b-4 border-outline-variant fixed top-0 left-0">
+    <div class="flex items-center gap-4">
+      <div id="top-patient-avatar" class="w-12 h-12 rounded-full overflow-hidden border-2 border-outline flex items-center justify-center bg-secondary-container text-primary font-bold text-2xl">
+        <span>PB</span>
+      </div>
+      <div>
+        <h1 id="top-patient-name" class="font-headline-lg text-headline-lg font-bold text-on-surface leading-tight">Priyom Barua</h1>
+        <p class="text-xs text-primary font-bold tracking-wider">NER COGNITIVE CARE</p>
+      </div>
+    </div>
+
+    <!-- Top Action Buttons & Live Airplane Mode Sync Toggle -->
+    <div class="flex items-center gap-3">
+      <!-- Register / Switch Patient Button -->
+      <button id="btn-top-register" title="Register New Patient or Switch Profile" class="h-touch-target-min px-4 rounded-lg bg-teal-950/70 border-2 border-teal-500 font-label-lg text-label-lg text-teal-300 hover:bg-teal-900 flex items-center gap-2 cursor-pointer active:scale-95">
+        <span class="material-symbols-outlined text-teal-400">person_add</span>
+        <span id="top-register-text">New Patient</span>
+      </button>
+
+      <!-- Interactive Sync / Airplane Mode Pill -->
+      <div id="sync-status-badge" title="Tap to toggle Airplane Mode for Demo" class="flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-950/70 border-2 border-emerald-600 cursor-pointer select-none active:scale-95">
+        <span class="material-symbols-outlined text-emerald-400 text-2xl">cloud_done</span>
+        <span id="sync-status-text" class="font-bold text-emerald-300">Online Synced</span>
+      </div>
+
+      <!-- Language Selector Button -->
+      <button id="btn-top-lang" class="h-touch-target-min px-4 rounded-lg bg-surface-container border-2 border-outline font-label-lg text-label-lg text-on-surface hover:bg-secondary-container flex items-center gap-2 cursor-pointer active:scale-95">
+        <span class="material-symbols-outlined" data-icon="language">language</span>
+        <span id="top-lang-text">অসমীয়া</span>
+      </button>
+
+      <!-- Settings Button -->
+      <button id="btn-top-settings" class="h-touch-target-min px-4 rounded-lg bg-surface-container border-2 border-outline font-label-lg text-label-lg text-on-surface hover:bg-secondary-container flex items-center gap-2 cursor-pointer active:scale-95">
+        <span class="material-symbols-outlined" data-icon="settings">settings</span>
+        <span>Settings</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content Canvas -->
+  <main id="main-canvas" class="p-margin-page space-y-stack-gap max-w-5xl mx-auto">
+    <!-- Populated dynamically by app.js -->
+  </main>
+
+  <!-- Medication & Routine Alert Modal (Overlay) -->
+  <div id="medication-alert-overlay" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-surface/95 backdrop-blur-md px-margin-page py-12">
+    <div class="w-full max-w-2xl bg-surface-container-high rounded-3xl border-4 border-error pulse-animation flex flex-col overflow-hidden shadow-2xl relative">
+      <!-- Warning Header Band -->
+      <div class="bg-error text-on-error py-4 px-6 flex items-center justify-center gap-3">
+        <span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">warning</span>
+        <span id="med-alert-header-text" class="font-body-xl text-body-xl uppercase tracking-widest font-extrabold">Time for Routine</span>
+        <span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">warning</span>
+      </div>
+
+      <div class="p-8 flex flex-col items-center text-center gap-stack-gap">
+        <!-- Large Icon -->
+        <div class="w-32 h-32 rounded-full bg-error-container flex items-center justify-center border-4 border-error mt-4">
+          <span id="med-alert-icon" class="material-symbols-outlined text-on-error-container" style="font-size: 80px; font-variation-settings: 'FILL' 1;">pill</span>
+        </div>
+
+        <!-- Primary Instruction -->
+        <div class="flex flex-col gap-4 mt-2">
+          <h2 id="med-alert-title" class="font-headline-xl text-headline-xl text-on-surface font-extrabold">Medication Routine</h2>
+          <p id="med-alert-dosage" class="font-body-xl text-body-xl text-primary font-bold bg-primary-container text-on-primary-container px-6 py-3 rounded-xl border-2 border-primary-fixed inline-block self-center">
+            Follow Care Plan Instructions
+          </p>
+        </div>
+
+        <!-- Additional Context -->
+        <p id="med-alert-desc" class="font-body-lg text-body-lg text-on-surface-variant mt-2 max-w-md">
+          Please complete your scheduled care routine now as prescribed by your caregiver.
+        </p>
+
+        <!-- Actions Container -->
+        <div class="flex flex-col w-full gap-stack-gap mt-6">
+          <button id="btn-took-it" class="w-full h-touch-target-primary rounded-xl border-4 border-[#047857] flex items-center justify-center gap-4 transition-all duration-200 active:scale-95 bg-[#059669] text-white hover:bg-[#047857] cursor-pointer">
+            <span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+            <span class="font-body-xl text-body-xl font-bold">I Took It (ঔষধ খাই লৈছো)</span>
+          </button>
+
+          <button id="btn-remind" class="w-full h-touch-target-primary bg-tertiary text-on-tertiary rounded-xl border-4 border-tertiary-fixed-dim flex items-center justify-center gap-4 transition-all duration-200 active:scale-95 hover:bg-tertiary-fixed cursor-pointer">
+            <span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">schedule</span>
+            <span class="font-body-xl text-body-xl font-bold">Remind in 10 Min (১০ মিনিট পিছত)</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Navigation Bar (Persistent) -->
+  <nav class="fixed bottom-0 left-0 w-full h-bottom-nav-height z-40 flex justify-around items-center px-gutter bg-surface-container-highest border-t-4 border-outline">
+    <button id="nav-home" class="flex flex-col items-center justify-center bg-primary text-on-primary rounded-xl h-[64px] min-w-[140px] px-6 active:scale-90 transition-all duration-100 cursor-pointer">
+      <span class="material-symbols-outlined text-[28px]" style="font-variation-settings: 'FILL' 1;">home</span>
+      <span class="font-label-lg text-label-lg font-bold">Home</span>
+    </button>
+    <button id="nav-voice-help" class="flex flex-col items-center justify-center text-on-surface hover:bg-secondary-container active:scale-90 transition-all duration-100 rounded-xl h-[64px] min-w-[140px] px-6 cursor-pointer border-2 border-outline">
+      <span class="material-symbols-outlined text-[28px]">mic</span>
+      <span class="font-label-lg text-label-lg font-bold">Voice Help</span>
+    </button>
+  </nav>
+
+  <!-- Application Scripts -->
+  <script src="./js/voice/translations.js"></script>
+  <script src="./js/voice/voice_service.js"></script>
+  <script src="./js/db/local_db.js"></script>
+  <script src="./js/dda/on_device_dda.js"></script>
+  <script src="./js/sync/sync_manager.js"></script>
+  <script src="./js/games/memory_game.js"></script>
+  <script src="./js/games/attention_game.js"></script>
+  <script src="./js/games/sequencing_game.js"></script>
+  <script src="./js/games/pattern_game.js"></script>
+  <script src="./js/app.js"></script>
+</body>
+</html>

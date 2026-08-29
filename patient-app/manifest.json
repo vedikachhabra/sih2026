@@ -1,0 +1,16 @@
+{
+  "name": "Cognitive Care (NER) - Patient Platform",
+  "short_name": "CognitiveCare",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#141218",
+  "theme_color": "#cfbcff",
+  "description": "Accessible, voice-first, offline cognitive gaming and memory assistance platform for elderly patients.",
+  "icons": [
+    {
+      "src": "https://fonts.gstatic.com/s/i/short-term/release/materialsymbolsoutlined/psychology/default/48px.svg",
+      "sizes": "48x48 72x72 96x96 144x144 192x192",
+      "type": "image/svg+xml"
+    }
+  ]
+}

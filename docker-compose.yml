@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  # 1. AI Backend REST Engine
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: ps26003_backend
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONUNBUFFERED=1
+      - APP_ENV=production
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+
+  # 2. Caregiver & Clinician Web Portal
+  caregiver-portal:
+    build:
+      context: .
+      dockerfile: caregiver-portal/Dockerfile
+    container_name: ps26003_caregiver_portal
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+  # 3. Patient Offline-First Tablet PWA
+  patient-app:
+    image: nginx:alpine
+    container_name: ps26003_patient_app
+    volumes:
+      - ./patient-app:/usr/share/nginx/html:ro
+    ports:
+      - "8080:80"
+    restart: unless-stopped
