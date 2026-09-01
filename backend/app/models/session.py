@@ -20,5 +20,6 @@ class GameSession(Base):
     ended_at = Column(DateTime, nullable=False)
     ingested_at = Column(DateTime, default=datetime.utcnow)
     device_info = Column(String(100), nullable=True)
+    extended_telemetry = Column(Text, nullable=True)
 
     patient = relationship("Patient", back_populates="game_sessions")

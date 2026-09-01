@@ -1,8 +1,10 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 from typing import List, Optional
 from datetime import datetime
 
 class GameSessionSyncItem(BaseModel):
+    model_config = ConfigDict(extra="allow")
+    
     local_id: str = Field(..., description="Client-generated UUID for idempotency")
     game_type: str  # 'memory', 'attention', 'sequencing', 'pattern'
     difficulty_level: int = 1

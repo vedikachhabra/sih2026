@@ -1,6 +1,7 @@
 from typing import List, Dict, Any, Tuple
 from sqlalchemy.orm import Session
 from datetime import datetime
+import json
 
 from backend.app.models.patient import Patient
 from backend.app.models.session import GameSession
@@ -53,6 +54,7 @@ class BatchSyncService:
                     started_at=s.started_at,
                     ended_at=s.ended_at,
                     device_info=s.device_info,
+                    extended_telemetry=json.dumps(s.model_extra) if s.model_extra else None,
                     ingested_at=datetime.utcnow()
                 )
                 db.add(new_session)

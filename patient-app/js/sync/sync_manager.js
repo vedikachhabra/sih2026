@@ -66,6 +66,32 @@ class SyncManager {
             completion_status: s.completion_status,
             started_at: s.started_at,
             ended_at: s.ended_at,
+            
+            // Extended Telemetry
+            score: s.score,
+            maximum_hesitation_ms: s.maximum_hesitation_ms,
+            hesitation_count: s.hesitation_count,
+            time_to_first_action_ms: s.time_to_first_action_ms,
+            fastest_attempt_time_ms: s.fastest_attempt_time_ms,
+            slowest_attempt_time_ms: s.slowest_attempt_time_ms,
+            
+            card_count: s.card_count,
+            pair_count: s.pair_count,
+            time_limit_sec: s.time_limit_sec,
+            actual_duration_ms: s.actual_duration_ms,
+            pairs_completed: s.pairs_completed,
+            correct_attempts: s.correct_attempts,
+            incorrect_attempts: s.incorrect_attempts,
+            total_attempts: s.total_attempts,
+            total_card_selections: s.total_card_selections,
+            median_reaction_time_ms: s.median_reaction_time_ms,
+            min_reaction_time_ms: s.min_reaction_time_ms,
+            max_reaction_time_ms: s.max_reaction_time_ms,
+            average_attempt_duration_ms: s.average_attempt_duration_ms,
+            hint_limit: s.hint_limit,
+            attempt_history: s.attempt_history,
+            hint_events: s.hint_events,
+
             device_info: "Tablet-NER-PatientApp"
           }))
         };

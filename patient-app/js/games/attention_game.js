@@ -1,4 +1,4 @@
-// Mini-Game 2: Attention & Odd-One-Out (মনোযোগ খেল)
+// Mini-Game 2: Attention & Focus (মনোযোগ খেল)
 class AttentionGame {
   constructor(containerId, onComplete) {
     this.container = document.getElementById(containerId);

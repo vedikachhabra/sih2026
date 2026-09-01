@@ -17,3 +17,5 @@ api_router.include_router(analytics_router)
 api_router.include_router(alerts_router)
 api_router.include_router(reports_router)
 api_router.include_router(voice_router)
+from backend.app.api.v1.patient_report import router as patient_report_router
+api_router.include_router(patient_report_router)

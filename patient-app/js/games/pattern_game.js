@@ -1,4 +1,4 @@
-// Mini-Game 4: Pattern & Shape Recognition (আকৃতি চিনাক্তকৰণ)
+// Mini-Game 4: Pattern Match (আকৃতি চিনাক্তকৰণ)
 class PatternGame {
   constructor(containerId, onComplete) {
     this.container = document.getElementById(containerId);

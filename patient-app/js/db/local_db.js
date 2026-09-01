@@ -110,6 +110,32 @@ class LocalDatabase {
       completion_status: sessionData.completion_status || "completed",
       started_at: sessionData.started_at || new Date().toISOString(),
       ended_at: sessionData.ended_at || new Date().toISOString(),
+      
+      // Extended Telemetry (Memory Pairs etc.)
+      score: sessionData.score || 0,
+      maximum_hesitation_ms: sessionData.maximum_hesitation_ms || 0,
+      hesitation_count: sessionData.hesitation_count || 0,
+      time_to_first_action_ms: sessionData.time_to_first_action_ms || null,
+      fastest_attempt_time_ms: sessionData.fastest_attempt_time_ms || null,
+      slowest_attempt_time_ms: sessionData.slowest_attempt_time_ms || null,
+      
+      card_count: sessionData.card_count,
+      pair_count: sessionData.pair_count,
+      time_limit_sec: sessionData.time_limit_sec,
+      actual_duration_ms: sessionData.actual_duration_ms,
+      pairs_completed: sessionData.pairs_completed,
+      correct_attempts: sessionData.correct_attempts,
+      incorrect_attempts: sessionData.incorrect_attempts,
+      total_attempts: sessionData.total_attempts,
+      total_card_selections: sessionData.total_card_selections,
+      median_reaction_time_ms: sessionData.median_reaction_time_ms,
+      min_reaction_time_ms: sessionData.min_reaction_time_ms,
+      max_reaction_time_ms: sessionData.max_reaction_time_ms,
+      average_attempt_duration_ms: sessionData.average_attempt_duration_ms,
+      hint_limit: sessionData.hint_limit,
+      attempt_history: sessionData.attempt_history,
+      hint_events: sessionData.hint_events,
+
       synced: 0 // 0 = pending sync, 1 = synced
     };
 

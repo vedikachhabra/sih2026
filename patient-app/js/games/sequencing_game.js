@@ -1,4 +1,4 @@
-// Mini-Game 3: Daily Routine Sequencing (ধাৰাবাহিকতা খেল)
+// Mini-Game 3: Daily Sequencing (ধাৰাবাহিকতা খেল)
 class SequencingGame {
   constructor(containerId, onComplete) {
     this.container = document.getElementById(containerId);

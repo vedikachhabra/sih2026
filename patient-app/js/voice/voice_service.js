@@ -251,4 +251,4 @@ class VoiceService {
 }
 
 const voiceService = new VoiceService();
-
+window.voiceService = voiceService;
