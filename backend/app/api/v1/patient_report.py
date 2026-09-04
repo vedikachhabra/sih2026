@@ -2,9 +2,9 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import Dict, Any
 
-from backend.app.db.session import get_db
+from backend.app.core.database import get_db
 from backend.app.models.patient import Patient
-from backend.app.models.game_session import GameSession
+from backend.app.models.session import GameSession
 
 router = APIRouter(prefix="/patient_report", tags=["reports"])
 
@@ -14,7 +14,7 @@ def get_patient_report(patient_id: str, db: Session = Depends(get_db)):
     if not patient:
         raise HTTPException(status_code=404, detail="Patient not found")
         
-    sessions = db.query(GameSession).filter(GameSession.patient_id == patient_id).order_by(GameSession.start_time.asc()).all()
+    sessions = db.query(GameSession).filter(GameSession.patient_id == patient_id).order_by(GameSession.started_at.asc()).all()
     
     # Calculate some basic behavioral indicators
     total_sessions = len(sessions)
@@ -27,8 +27,8 @@ def get_patient_report(patient_id: str, db: Session = Depends(get_db)):
     # Analyze trends
     recent_sessions = sessions[-5:] # last 5 sessions
     
-    avg_accuracy = sum(s.metrics.get("accuracy", 0) for s in recent_sessions) / len(recent_sessions) if recent_sessions else 0
-    avg_hints = sum(s.metrics.get("hints_used", 0) for s in recent_sessions) / len(recent_sessions) if recent_sessions else 0
+    avg_accuracy = sum(s.accuracy or 0 for s in recent_sessions) / len(recent_sessions) if recent_sessions else 0
+    avg_hints = sum(s.hints_used or 0 for s in recent_sessions) / len(recent_sessions) if recent_sessions else 0
     
     report = {
         "disclaimer": "Game-derived behavioral indicators - not clinical diagnoses.",

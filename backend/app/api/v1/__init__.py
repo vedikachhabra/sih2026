@@ -7,8 +7,9 @@ from backend.app.api.v1.analytics import router as analytics_router
 from backend.app.api.v1.alerts import router as alerts_router
 from backend.app.api.v1.reports import router as reports_router
 from backend.app.api.v1.voice import router as voice_router
-
+from backend.app.api.v1.memory_adaptation import router as memory_adaptation_router
 api_router = APIRouter()
+api_router.include_router(memory_adaptation_router)
 api_router.include_router(auth_router)
 api_router.include_router(patients_router)
 api_router.include_router(sync_router)

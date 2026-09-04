@@ -345,7 +345,7 @@ class PatientApp {
     syncManager.attemptSync();
   }
 
-  launchGame(gameType) {
+  async launchGame(gameType) {
     this.currentView = "game";
     const mainCanvas = document.getElementById("main-canvas");
     mainCanvas.innerHTML = `<div id="active-game-container"></div>`;
@@ -353,8 +353,14 @@ class PatientApp {
     const level = onDeviceDDA.getCurrentLevel(gameType);
 
     if (gameType === "memory") {
-      this.activeGameInstance = new MemoryGame("active-game-container", () => this.renderHome());
-      this.activeGameInstance.start(level);
+      const patientId = (window.syncManager && window.syncManager.patientId) || "p-assam-001";
+      this.memoryRLAgent = new MemoryRLAgent(patientId);
+      
+      this.activeGameInstance = new MemoryGame("active-game-container", () => this.renderHome(), this.memoryRLAgent);
+      
+      const { config: aiConfig } = this.memoryRLAgent.getInitialConfig();
+      
+      this.activeGameInstance.start(aiConfig ? aiConfig.level : level, aiConfig);
     } else if (gameType === "attention") {
       this.activeGameInstance = new AttentionGame("active-game-container", () => this.renderHome());
       this.activeGameInstance.start(level);
